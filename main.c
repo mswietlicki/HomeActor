@@ -20,7 +20,7 @@ int main(void){
 	DDRB &= ~_BV(DDB1);				//Button
 	
 	while(1){
-		if(CHECK_BIT(PINA,1))
+		if(CHECK_BIT(PINB,1))
 			PORTB &= ~_BV(PB0);
 		else
 			PORTB |= _BV(PB0);

@@ -20,7 +20,7 @@ int main(void){
 	DDRB &= ~_BV(DDB1);				//Button
 	
 	while(1){
-		if(CHECK_BIT(PINB,1))
+		if(PINB & (1 << PB1))  		//Is button on?
 			PORTB &= ~_BV(PB0);
 		else
 			PORTB |= _BV(PB0);
@@ -28,7 +28,7 @@ int main(void){
 		//	PORTB |= _BV(PB0);
 		//else
 		//	PORTB &= ~_BV(PB0);
-		//_delay_ms(500);
+		_delay_ms(200);
 	}
 	
 	return 0;

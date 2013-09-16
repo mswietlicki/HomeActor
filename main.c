@@ -10,7 +10,7 @@
 #include "i2c_slave.h"
 
 int main(void){
-	I2C_init(0x10); 
+	I2C_init(0x12); 
 	
 	sei();
 	

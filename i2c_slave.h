@@ -91,3 +91,5 @@ ISR(TWI_vect)
      i2c_pointer = 0;
 
 }
+
+#endif

@@ -18,10 +18,10 @@ int main(void){
 	
 	DDRB |= _BV(DDB0); 				//LED1
 	DDRB &= ~_BV(DDB1);				//Button
-	PORTB &= ~_BV(PB1);				//pull-up button
+	PORTB |= _BV(PB1);				//pull-up
 	
 	while(1){
-		if(PINB & (1 << PB1))  		//Is button on?
+		if(!CHECK_BIT(PINB,PB1))  		//Is button on?
 			PORTB &= ~_BV(PB0);
 		else
 			PORTB |= _BV(PB0);

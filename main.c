@@ -12,8 +12,10 @@
 #define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
 #define In1 (!CHECK_BIT(PINB,PB1))
 
-#define RIn1 (i2c_buffer[2])
-#define ROut1 (i2c_buffer[1])
+#define RIn1 (i2c_buffer[8])
+#define ROut1 (i2c_buffer[0])
+
+#define SetBit(var,pos,val) (if(val) var &= ~_BV(pos); else var |= _BV(pos);)
 
 int main(void){
 	I2C_init(0x10); 
@@ -25,15 +27,17 @@ int main(void){
 	PORTB |= _BV(PB1);				//pull-up Button
 	
 	while(1){
-		if(In1 && RIn1 != In1)
+		if(In1 && RIn1 != In1)		//On button down
 			ROut1 ^= 1;
 			
 		RIn1 = In1;
 		
-		if(ROut1)
-			PORTB &= ~_BV(PB0);		//LED ON
-		else
-			PORTB |= _BV(PB0);		//LED OFF
+		SetBit(PORTB,PB0,ROut1);
+		
+//		if(ROut1)
+//			PORTB &= ~_BV(PB0);		//LED ON
+//		else
+//			PORTB |= _BV(PB0);		//LED OFF
 			
 		_delay_ms(50);
 	}

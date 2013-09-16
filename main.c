@@ -18,18 +18,18 @@ int main(void){
 	
 	DDRB |= _BV(DDB0); 				//LED1
 	DDRB &= ~_BV(DDB1);				//Button
-	PORTB |= _BV(PB1);				//pull-up
+	PORTB |= _BV(PB1);				//pull-up Button
 	
 	while(1){
-		if(!CHECK_BIT(PINB,PB1))  		//Is button on?
-			PORTB &= ~_BV(PB0);
-		else
+	
+		i2c_buffer[2] = !CHECK_BIT(PINB,PB1);
+			
+		if(i2c_buffer[1] == 1)
 			PORTB |= _BV(PB0);
-		//if(i2c_buffer[1] == 1)
-		//	PORTB |= _BV(PB0);
-		//else
-		//	PORTB &= ~_BV(PB0);
-		_delay_ms(200);
+		else
+			PORTB &= ~_BV(PB0);
+			
+		_delay_ms(50);
 	}
 	
 	return 0;

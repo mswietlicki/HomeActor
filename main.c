@@ -14,14 +14,14 @@ int main(void){
 	
 	sei();
 	
-	DDRB |= _BV(DDB0);
+	DDRB |= _BV(DDB4);
 	
 	while(1){
 		if(i2c_buffer[1] == 1)
-			PORTB |= _BV(PB0);
+			PORTB |= _BV(PB4);
 		else
-			PORTB &= ~_BV(PB0);
-		_delay_ms(500);
+			PORTB &= ~_BV(PB4);
+		_delay_ms(300);
 	}
 	
 	return 0;

@@ -10,6 +10,10 @@
 #include "i2c_slave.h"
 
 #define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
+#define I1 (!CHECK_BIT(PINB,PB1))
+
+#define RI1 (i2c_buffer[2])
+#define RO1 (i2c_buffer[1])
 
 int main(void){
 	I2C_init(0x10); 
@@ -22,12 +26,12 @@ int main(void){
 	
 	while(1){
 	
-		i2c_buffer[2] = !CHECK_BIT(PINB,PB1);
-			
-		if(i2c_buffer[1] == 1)
-			PORTB |= _BV(PB0);
+		RI1 = I1;
+	
+		if(RO1)
+			PORTB &= ~_BV(PB0);		//LED ON
 		else
-			PORTB &= ~_BV(PB0);
+			PORTB |= _BV(PB0);		//LED OFF
 			
 		_delay_ms(50);
 	}

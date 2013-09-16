@@ -13,7 +13,7 @@
 #define In1 (!CHECK_BIT(PINB,PB1))
 
 #define RIn1 (i2c_buffer[2])
-#define ROou1 (i2c_buffer[1])
+#define ROut1 (i2c_buffer[1])
 
 int main(void){
 	I2C_init(0x10); 
@@ -25,7 +25,7 @@ int main(void){
 	PORTB |= _BV(PB1);				//pull-up Button
 	
 	while(1){
-		if(RIn1 != In1)
+		if(In1 && RIn1 != In1)
 			ROut1 ^= 1;
 			
 		RIn1 = In1;

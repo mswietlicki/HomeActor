@@ -25,31 +25,40 @@ ISR(TWI_vect)
 	switch(TW_STATUS)
     {
 		case TW_SR_SLA_ACK:              // Slave receiver acknowledge
+			i2c_buffer[10]++;
 		case TW_SR_ARB_LOST_SLA_ACK:     // Arbitration lost
+			i2c_buffer[11]++;
 			TWCR = 0b11000101;           // TWINT, TWEA, TWEN, TWIE
 			i2c_is_pointer = 1;
 			break;
 		case TW_SR_DATA_ACK:
+			i2c_buffer[12]++;
 			if(i2c_is_pointer){
+				i2c_buffer[13]++;
 				i2c_pointer = TWDR;
 				i2c_is_pointer = 0;
 			}
-			else {                       
+			else {
+				i2c_buffer[14]++;
 				i2c_buffer[i2c_pointer++] = TWDR;
 			}
 			TWCR = 0b11000101;           // TWINT, TWEA, TWEN, TWIE 
 			break;
 		case TW_SR_STOP:
+			i2c_buffer[15]++;
 			TWCR = 0b11000101;           // TWINT, TWEA, TWEN, TWIE
 			break;
 		case TW_ST_SLA_ACK:
 		case TW_ST_ARB_LOST_SLA_ACK:
+			i2c_buffer[16]++;
 			TWDR = i2c_buffer[i2c_pointer++]; 
 			TWCR = 0b11000101;           // TWINT, TWEA, TWEN, TWIE 
 			break;
 		case TW_ST_DATA_ACK:
+			i2c_buffer[17]++;
 			TWDR = i2c_buffer[i2c_pointer++]; 
 		case TW_ST_DATA_NACK:
+			i2c_buffer[18]++;
 			TWCR = 0b11000101;           // TWINT, TWEA, TWEN, TWIE 
 			break;
 		case TW_BUS_ERROR:

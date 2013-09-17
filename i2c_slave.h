@@ -16,6 +16,17 @@ static unsigned char i2c_is_pointer=0;
 
 void I2C_init(unsigned char address_gce)
 {
+	i2c_buffer[10] = 0;
+	i2c_buffer[11] = 0;
+	i2c_buffer[12] = 0;
+	i2c_buffer[13] = 0;
+	i2c_buffer[14] = 0;
+	i2c_buffer[15] = 0;
+	i2c_buffer[16] = 0;
+	i2c_buffer[17] = 0;
+	i2c_buffer[18] = 0;
+	
+
 	TWAR = address_gce << 1;
 	TWI_ON();
 }

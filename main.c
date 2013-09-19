@@ -17,7 +17,7 @@
 #define SetBit(var,pos,val) if(val) var &= ~_BV(pos); else var |= _BV(pos)
 
 int main(void){
-	I2C_init(0x12); 
+	//I2C_init(0x12); 
 	
 	sei();
 	

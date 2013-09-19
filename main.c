@@ -17,10 +17,10 @@
 #define SetBit(var,pos,val) if(val) var &= ~_BV(pos); else var |= _BV(pos)
 
 int main(void){
-	//I2C_init(0x12); 
-	
+
 	sei();
-	
+	I2C_init(0x12); 
+
 	DDRB |= _BV(DDB3); 				//LED1
 	DDRB &= ~_BV(DDB4);				//Button
 	PORTB |= _BV(PB4);				//pull-up Button

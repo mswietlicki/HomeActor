@@ -18,87 +18,87 @@
 
 #define SET_USI_TO_SEND_ACK( ) \
 { \
-  /* prepare ACK */ \
-  USIDR = 0; \
-  /* set SDA as output */ \
-  DDR_USI |= ( 1 << PORT_USI_SDA ); \
-  /* clear all interrupt flags, except Start Cond */ \
-  USISR = \
-       ( 0 << USI_START_COND_INT ) | \
-       ( 1 << USIOIF ) | ( 1 << USIPF ) | \
-       ( 1 << USIDC )| \
-       /* set USI counter to shift 1 bit */ \
-       ( 0x0E << USICNT0 ); \
+	/* prepare ACK */ \
+	USIDR = 0; \
+	/* set SDA as output */ \
+	DDR_USI |= ( 1 << PORT_USI_SDA ); \
+	/* clear all interrupt flags, except Start Cond */ \
+	USISR = \
+	( 0 << USI_START_COND_INT ) | \
+	( 1 << USIOIF ) | ( 1 << USIPF ) | \
+	( 1 << USIDC )| \
+	/* set USI counter to shift 1 bit */ \
+	( 0x0E << USICNT0 ); \
 }
 
 #define SET_USI_TO_READ_ACK( ) \
 { \
-  /* set SDA as input */ \
-  DDR_USI &= ~( 1 << PORT_USI_SDA ); \
-  /* prepare ACK */ \
-  USIDR = 0; \
-  /* clear all interrupt flags, except Start Cond */ \
-  USISR = \
-       ( 0 << USI_START_COND_INT ) | \
-       ( 1 << USIOIF ) | \
-       ( 1 << USIPF ) | \
-       ( 1 << USIDC ) | \
-       /* set USI counter to shift 1 bit */ \
-       ( 0x0E << USICNT0 ); \
+	/* set SDA as input */ \
+	DDR_USI &= ~( 1 << PORT_USI_SDA ); \
+	/* prepare ACK */ \
+	USIDR = 0; \
+	/* clear all interrupt flags, except Start Cond */ \
+	USISR = \
+	( 0 << USI_START_COND_INT ) | \
+	( 1 << USIOIF ) | \
+	( 1 << USIPF ) | \
+	( 1 << USIDC ) | \
+	/* set USI counter to shift 1 bit */ \
+	( 0x0E << USICNT0 ); \
 }
 
 #define SET_USI_TO_TWI_START_CONDITION_MODE( ) \
 { \
-  USICR = \
-       /* enable Start Condition Interrupt, disable Overflow Interrupt */ \
-       ( 1 << USISIE ) | ( 0 << USIOIE ) | \
-       /* set USI in Two-wire mode, no USI Counter overflow hold */ \
-       ( 1 << USIWM1 ) | ( 0 << USIWM0 ) | \
-       /* Shift Register Clock Source = External, positive edge */ \
-       /* 4-Bit Counter Source = external, both edges */ \
-       ( 1 << USICS1 ) | ( 0 << USICS0 ) | ( 0 << USICLK ) | \
-       /* no toggle clock-port pin */ \
-       ( 0 << USITC ); \
-  USISR = \
-        /* clear all interrupt flags, except Start Cond */ \
-        ( 0 << USI_START_COND_INT ) | ( 1 << USIOIF ) | ( 1 << USIPF ) | \
-        ( 1 << USIDC ) | ( 0x0 << USICNT0 ); \
+	USICR = \
+	/* enable Start Condition Interrupt, disable Overflow Interrupt */ \
+	( 1 << USISIE ) | ( 0 << USIOIE ) | \
+	/* set USI in Two-wire mode, no USI Counter overflow hold */ \
+	( 1 << USIWM1 ) | ( 0 << USIWM0 ) | \
+	/* Shift Register Clock Source = External, positive edge */ \
+	/* 4-Bit Counter Source = external, both edges */ \
+	( 1 << USICS1 ) | ( 0 << USICS0 ) | ( 0 << USICLK ) | \
+	/* no toggle clock-port pin */ \
+	( 0 << USITC ); \
+	USISR = \
+	/* clear all interrupt flags, except Start Cond */ \
+	( 0 << USI_START_COND_INT ) | ( 1 << USIOIF ) | ( 1 << USIPF ) | \
+	( 1 << USIDC ) | ( 0x0 << USICNT0 ); \
 }
 
 #define SET_USI_TO_SEND_DATA( ) \
 { \
-  /* set SDA as output */ \
-  DDR_USI |=  ( 1 << PORT_USI_SDA ); \
-  /* clear all interrupt flags, except Start Cond */ \
-  USISR    =  \
-       ( 0 << USI_START_COND_INT ) | ( 1 << USIOIF ) | ( 1 << USIPF ) | \
-       ( 1 << USIDC) | \
-       /* set USI to shift out 8 bits */ \
-       ( 0x0 << USICNT0 ); \
+	/* set SDA as output */ \
+	DDR_USI |=  ( 1 << PORT_USI_SDA ); \
+	/* clear all interrupt flags, except Start Cond */ \
+	USISR    =  \
+	( 0 << USI_START_COND_INT ) | ( 1 << USIOIF ) | ( 1 << USIPF ) | \
+	( 1 << USIDC) | \
+	/* set USI to shift out 8 bits */ \
+	( 0x0 << USICNT0 ); \
 }
 
 #define SET_USI_TO_READ_DATA( ) \
 { \
-  /* set SDA as input */ \
-  DDR_USI &= ~( 1 << PORT_USI_SDA ); \
-  /* clear all interrupt flags, except Start Cond */ \
-  USISR    = \
-       ( 0 << USI_START_COND_INT ) | ( 1 << USIOIF ) | \
-       ( 1 << USIPF ) | ( 1 << USIDC ) | \
-       /* set USI to shift out 8 bits */ \
-       ( 0x0 << USICNT0 ); \
+	/* set SDA as input */ \
+	DDR_USI &= ~( 1 << PORT_USI_SDA ); \
+	/* clear all interrupt flags, except Start Cond */ \
+	USISR    = \
+	( 0 << USI_START_COND_INT ) | ( 1 << USIOIF ) | \
+	( 1 << USIPF ) | ( 1 << USIDC ) | \
+	/* set USI to shift out 8 bits */ \
+	( 0x0 << USICNT0 ); \
 }
 
 
 
 typedef enum
 {
-  USI_SLAVE_CHECK_ADDRESS                = 0x00,
-  USI_SLAVE_SEND_DATA                    = 0x01,
-  USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA = 0x02,
-  USI_SLAVE_CHECK_REPLY_FROM_SEND_DATA   = 0x03,
-  USI_SLAVE_REQUEST_DATA                 = 0x04,
-  USI_SLAVE_GET_DATA_AND_SEND_ACK        = 0x05
+	USI_SLAVE_CHECK_ADDRESS                = 0x00,
+	USI_SLAVE_SEND_DATA                    = 0x01,
+	USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA = 0x02,
+	USI_SLAVE_CHECK_REPLY_FROM_SEND_DATA   = 0x03,
+	USI_SLAVE_REQUEST_DATA                 = 0x04,
+	USI_SLAVE_GET_DATA_AND_SEND_ACK        = 0x05
 } overflowState_t;
 
 
@@ -122,198 +122,175 @@ static void flushTwiBuffers()
 
 void I2C_init(uint8_t ownAddress)
 {
-  flushTwiBuffers( );
+	flushTwiBuffers( );
 
-  slaveAddress = ownAddress;
+	slaveAddress = ownAddress;
 
-  // Set SCL and SDA as output
-  DDR_USI |= ( 1 << PORT_USI_SCL ) | ( 1 << PORT_USI_SDA );
+	// Set SCL and SDA as output
+	DDR_USI |= ( 1 << PORT_USI_SCL ) | ( 1 << PORT_USI_SDA );
 
-  // set SCL high
-  PORT_USI |= ( 1 << PORT_USI_SCL );
+	// set SCL high
+	PORT_USI |= ( 1 << PORT_USI_SCL );
 
-  // set SDA high
-  PORT_USI |= ( 1 << PORT_USI_SDA );
+	// set SDA high
+	PORT_USI |= ( 1 << PORT_USI_SDA );
 
-  // Set SDA as input
-  DDR_USI &= ~( 1 << PORT_USI_SDA );
+	// Set SDA as input
+	DDR_USI &= ~( 1 << PORT_USI_SDA );
 
-  USICR =
-       // enable Start Condition Interrupt
-       ( 1 << USISIE ) |
-       // disable Overflow Interrupt
-       ( 0 << USIOIE ) |
-       // set USI in Two-wire mode, no USI Counter overflow hold
-       ( 1 << USIWM1 ) | ( 0 << USIWM0 ) |
-       // Shift Register Clock Source = external, positive edge
-       // 4-Bit Counter Source = external, both edges
-       ( 1 << USICS1 ) | ( 0 << USICS0 ) | ( 0 << USICLK ) |
-       // no toggle clock-port pin
-       ( 0 << USITC );
+	USICR =
+		// enable Start Condition Interrupt
+		( 1 << USISIE ) |
+		// disable Overflow Interrupt
+		( 0 << USIOIE ) |
+		// set USI in Two-wire mode, no USI Counter overflow hold
+		( 1 << USIWM1 ) | ( 0 << USIWM0 ) |
+		// Shift Register Clock Source = external, positive edge
+		// 4-Bit Counter Source = external, both edges
+		( 1 << USICS1 ) | ( 0 << USICS0 ) | ( 0 << USICLK ) |
+		// no toggle clock-port pin
+		( 0 << USITC );
 
-  // clear all interrupt flags and reset overflow counter
+	// clear all interrupt flags and reset overflow counter
 
-  USISR = ( 1 << USI_START_COND_INT ) | ( 1 << USIOIF ) | ( 1 << USIPF ) | ( 1 << USIDC );
+	USISR = ( 1 << USI_START_COND_INT ) | ( 1 << USIOIF ) | ( 1 << USIPF ) | ( 1 << USIDC );
 
 } // end usiTwiSlaveInit
 
-
-///********************************************************************************
-//
-//                            USI Start Condition ISR
-//
-//********************************************************************************/
-//
 ISR( USI_START_VECTOR )
 {
 
-  // set default starting conditions for new TWI package
-  overflowState = USI_SLAVE_CHECK_ADDRESS;
+	// set default starting conditions for new TWI package
+	overflowState = USI_SLAVE_CHECK_ADDRESS;
 
-  // set SDA as input
-  DDR_USI &= ~( 1 << PORT_USI_SDA );
+	// set SDA as input
+	DDR_USI &= ~( 1 << PORT_USI_SDA );
 
-  // wait for SCL to go low to ensure the Start Condition has completed (the
-  // start detector will hold SCL low ) - if a Stop Condition arises then leave
-  // the interrupt to prevent waiting forever - don't use USISR to test for Stop
-  // Condition as in Application Note AVR312 because the Stop Condition Flag is
-  // going to be set from the last TWI sequence
-  while (
-       // SCL his high
-       ( PIN_USI & ( 1 << PIN_USI_SCL ) ) &&
-       // and SDA is low
-       !( ( PIN_USI & ( 1 << PIN_USI_SDA ) ) )
-  );
+	// wait for SCL to go low to ensure the Start Condition has completed (the
+	// start detector will hold SCL low ) - if a Stop Condition arises then leave
+	// the interrupt to prevent waiting forever - don't use USISR to test for Stop
+	// Condition as in Application Note AVR312 because the Stop Condition Flag is
+	// going to be set from the last TWI sequence
+	while (
+		// SCL his high
+			( PIN_USI & ( 1 << PIN_USI_SCL ) ) &&
+			// and SDA is low
+			!( ( PIN_USI & ( 1 << PIN_USI_SDA ) ) )
+			);
 
 
-  if ( !( PIN_USI & ( 1 << PIN_USI_SDA ) ) )
-  {
+	if ( !( PIN_USI & ( 1 << PIN_USI_SDA ) ) )
+	{
 
-    // a Stop Condition did not occur
+		// a Stop Condition did not occur
 
-    USICR =
-         // keep Start Condition Interrupt enabled to detect RESTART
-         ( 1 << USISIE ) |
-         // enable Overflow Interrupt
-         ( 1 << USIOIE ) |
-         // set USI in Two-wire mode, hold SCL low on USI Counter overflow
-         ( 1 << USIWM1 ) | ( 1 << USIWM0 ) |
-         // Shift Register Clock Source = External, positive edge
-         // 4-Bit Counter Source = external, both edges
-         ( 1 << USICS1 ) | ( 0 << USICS0 ) | ( 0 << USICLK ) |
-         // no toggle clock-port pin
-         ( 0 << USITC );
+		USICR =
+			// keep Start Condition Interrupt enabled to detect RESTART
+			( 1 << USISIE ) |
+			// enable Overflow Interrupt
+			( 1 << USIOIE ) |
+			// set USI in Two-wire mode, hold SCL low on USI Counter overflow
+			( 1 << USIWM1 ) | ( 1 << USIWM0 ) |
+			// Shift Register Clock Source = External, positive edge
+			// 4-Bit Counter Source = external, both edges
+			( 1 << USICS1 ) | ( 0 << USICS0 ) | ( 0 << USICLK ) |
+			// no toggle clock-port pin
+			( 0 << USITC );
 
-  }
-  else
-  {
+	}
+	else
+	{
 
-    // a Stop Condition did occur
-    USICR =
-         // enable Start Condition Interrupt
-         ( 1 << USISIE ) |
-         // disable Overflow Interrupt
-         ( 0 << USIOIE ) |
-         // set USI in Two-wire mode, no USI Counter overflow hold
-         ( 1 << USIWM1 ) | ( 0 << USIWM0 ) |
-         // Shift Register Clock Source = external, positive edge
-         // 4-Bit Counter Source = external, both edges
-         ( 1 << USICS1 ) | ( 0 << USICS0 ) | ( 0 << USICLK ) |
-         // no toggle clock-port pin
-         ( 0 << USITC );
+		// a Stop Condition did occur
+		USICR =
+			// enable Start Condition Interrupt
+			( 1 << USISIE ) |
+			// disable Overflow Interrupt
+			( 0 << USIOIE ) |
+			// set USI in Two-wire mode, no USI Counter overflow hold
+			( 1 << USIWM1 ) | ( 0 << USIWM0 ) |
+			// Shift Register Clock Source = external, positive edge
+			// 4-Bit Counter Source = external, both edges
+			( 1 << USICS1 ) | ( 0 << USICS0 ) | ( 0 << USICLK ) |
+			// no toggle clock-port pin
+			( 0 << USITC );
 
-  } // end if
+	} // end if
 
-  USISR =
-       // clear interrupt flags - resetting the Start Condition Flag will
-       // release SCL
-       ( 1 << USI_START_COND_INT ) | ( 1 << USIOIF ) |
-       ( 1 << USIPF ) |( 1 << USIDC ) |
-       // set USI to sample 8 bits (count 16 external SCL pin toggles)
-       ( 0x0 << USICNT0);
+	USISR =
+		// clear interrupt flags - resetting the Start Condition Flag will
+		// release SCL
+		( 1 << USI_START_COND_INT ) | ( 1 << USIOIF ) |
+		( 1 << USIPF ) |( 1 << USIDC ) |
+		// set USI to sample 8 bits (count 16 external SCL pin toggles)
+		( 0x0 << USICNT0);
 
 } // end ISR( USI_START_VECTOR )
 
-
-
-///********************************************************************************
-//
-//                                USI Overflow ISR
-//
-//Handles all the communication.
-//
-//Only disabled when waiting for a new Start Condition.
-//
-//********************************************************************************/
-
 ISR( USI_OVERFLOW_VECTOR )
 {
+	switch (overflowState)
+	{
+	case USI_SLAVE_CHECK_ADDRESS:
+		if ( ( USIDR == 0 ) || ( ( USIDR >> 1 ) == slaveAddress) )
+		{
+			if ( USIDR & 0x01 )
+			{
+				overflowState = USI_SLAVE_SEND_DATA;
+			}
+			else
+			{
+				overflowState = USI_SLAVE_REQUEST_DATA;
+			} // end if
+			SET_USI_TO_SEND_ACK( );
+		}
+		else
+		{
+			SET_USI_TO_TWI_START_CONDITION_MODE( );
+			i2c_is_pointer = 1;
+		}
+		break;
 
-  switch ( overflowState )
-  {
+		// Master write data mode: check reply and goto USI_SLAVE_SEND_DATA if OK,
+		// else reset USI
+	case USI_SLAVE_CHECK_REPLY_FROM_SEND_DATA:
+		if ( USIDR )
+		{
+			// if NACK, the master does not want more data
+			SET_USI_TO_TWI_START_CONDITION_MODE( );
+			i2c_is_pointer = 1;
+			return;
+		}
+		// from here we just drop straight into USI_SLAVE_SEND_DATA if the
+		// master sent an ACK
 
-    // Address mode: check address and send ACK (and next USI_SLAVE_SEND_DATA) if OK,
-    // else reset USI
-    case USI_SLAVE_CHECK_ADDRESS:
-      if ( ( USIDR == 0 ) || ( ( USIDR >> 1 ) == slaveAddress) )
-      {
-          if ( USIDR & 0x01 )
-        {
-          overflowState = USI_SLAVE_SEND_DATA;
-        }
-        else
-        {
-          overflowState = USI_SLAVE_REQUEST_DATA;
-        } // end if
-        SET_USI_TO_SEND_ACK( );
-      }
-      else
-      {
-        SET_USI_TO_TWI_START_CONDITION_MODE( );
-		i2c_is_pointer = 1;
-      }
-      break;
+		// copy data from buffer to USIDR and set USI to shift byte
+		// next USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA
+	case USI_SLAVE_SEND_DATA:
 
-    // Master write data mode: check reply and goto USI_SLAVE_SEND_DATA if OK,
-    // else reset USI
-    case USI_SLAVE_CHECK_REPLY_FROM_SEND_DATA:
-      if ( USIDR )
-      {
-        // if NACK, the master does not want more data
-        SET_USI_TO_TWI_START_CONDITION_MODE( );
-		i2c_is_pointer = 1;
-        return;
-      }
-      // from here we just drop straight into USI_SLAVE_SEND_DATA if the
-      // master sent an ACK
-
-    // copy data from buffer to USIDR and set USI to shift byte
-    // next USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA
-    case USI_SLAVE_SEND_DATA:
-      
 		USIDR = i2c_buffer[i2c_pointer++];
 
-      overflowState = USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA;
-      SET_USI_TO_SEND_DATA( );
-      break;
+		overflowState = USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA;
+		SET_USI_TO_SEND_DATA( );
+		break;
 
-    // set USI to sample reply from master
-    // next USI_SLAVE_CHECK_REPLY_FROM_SEND_DATA
-    case USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA:
-      overflowState = USI_SLAVE_CHECK_REPLY_FROM_SEND_DATA;
-      SET_USI_TO_READ_ACK( );
-      break;
+		// set USI to sample reply from master
+		// next USI_SLAVE_CHECK_REPLY_FROM_SEND_DATA
+	case USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA:
+		overflowState = USI_SLAVE_CHECK_REPLY_FROM_SEND_DATA;
+		SET_USI_TO_READ_ACK( );
+		break;
 
-    // Master read data mode: set USI to sample data from master, next
-    // USI_SLAVE_GET_DATA_AND_SEND_ACK
-    case USI_SLAVE_REQUEST_DATA:
-      overflowState = USI_SLAVE_GET_DATA_AND_SEND_ACK;
-      SET_USI_TO_READ_DATA( );
-      break;
+		// Master read data mode: set USI to sample data from master, next
+		// USI_SLAVE_GET_DATA_AND_SEND_ACK
+	case USI_SLAVE_REQUEST_DATA:
+		overflowState = USI_SLAVE_GET_DATA_AND_SEND_ACK;
+		SET_USI_TO_READ_DATA( );
+		break;
 
-    // copy data from USIDR and send ACK
-    // next USI_SLAVE_REQUEST_DATA
-    case USI_SLAVE_GET_DATA_AND_SEND_ACK:
+		// copy data from USIDR and send ACK
+		// next USI_SLAVE_REQUEST_DATA
+	case USI_SLAVE_GET_DATA_AND_SEND_ACK:
 
 		if(i2c_is_pointer){
 			i2c_pointer = USIDR;
@@ -322,19 +299,15 @@ ISR( USI_OVERFLOW_VECTOR )
 			i2c_buffer[i2c_pointer++] = USIDR;
 		}
 
-      // next USI_SLAVE_REQUEST_DATA
-      overflowState = USI_SLAVE_REQUEST_DATA;
-      SET_USI_TO_SEND_ACK( );
-      break;
+		// next USI_SLAVE_REQUEST_DATA
+		overflowState = USI_SLAVE_REQUEST_DATA;
+		SET_USI_TO_SEND_ACK( );
+		break;
 
-  } // end switch
+	} // end switch
 
-   if(i2c_pointer >= MAX_I2C_BUFFER)
-     i2c_pointer = 0;
+	if(i2c_pointer >= MAX_I2C_BUFFER)
+		i2c_pointer = 0;
 } // end ISR( USI_OVERFLOW_VECTOR )
-//
-//
-//
-//
 #endif  // ifndef _USI_TWI_SLAVE_H_
 

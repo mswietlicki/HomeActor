@@ -24,15 +24,15 @@ int main(void){
 	DDRB |= _BV(DDB3); 				//LED1
 	DDRB &= ~_BV(DDB4);				//Button
 	PORTB |= _BV(PB4);				//pull-up Button
-	
+
 	while(1){
 		if(In1 && RIn1 != In1)		//On button down
 			ROut1 ^= 1;
-			
+
 		RIn1 = In1;					//Move button value register
-		
+
 		SetBit(PORTB, PB3, ROut1);	//Set bit PB0 of PORTB to ROut1
-		
+
 		_delay_ms(50);
 	}
 	return 0;

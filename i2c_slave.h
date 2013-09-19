@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "usiTwiSlave.h"
 
 #define DDR_USI             DDRB
 #define PORT_USI            PORTB

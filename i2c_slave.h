@@ -267,9 +267,12 @@ ISR( USI_OVERFLOW_VECTOR )
 		// copy data from buffer to USIDR and set USI to shift byte
 		// next USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA
 	case USI_SLAVE_SEND_DATA:
-
-		USIDR = i2c_buffer[i2c_pointer++];
-
+		if(i2c_is_pointer){
+			i2c_pointer = USIDR;
+			i2c_is_pointer = 0;
+		}else{
+			USIDR = i2c_buffer[i2c_pointer++];
+		}
 		overflowState = USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA;
 		SET_USI_TO_SEND_DATA( );
 		break;

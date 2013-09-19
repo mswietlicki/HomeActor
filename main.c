@@ -6,7 +6,6 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include <avr/interrupt.h>
-
 #include "i2c_slave.h"
 
 #define CHECK_BIT(var,pos) ((var) & (1<<(pos)))

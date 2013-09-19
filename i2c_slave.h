@@ -115,7 +115,8 @@ static uint8_t i2c_is_pointer;
 // flushes the TWI buffers
 static void flushTwiBuffers()
 {
-	for(uint8_t i = 0; i < MAX_I2C_BUFFER; i++)
+	uint8_t i;
+	for(i = 0; i < MAX_I2C_BUFFER; i++)
 		i2c_buffer[i] = 0;
 
 	i2c_pointer = 0;

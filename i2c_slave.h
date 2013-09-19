@@ -115,6 +115,9 @@ static uint8_t i2c_is_pointer;
 // flushes the TWI buffers
 static void flushTwiBuffers()
 {
+	for(uint8_t i = 0; i < MAX_I2C_BUFFER; i++)
+		i2c_buffer[i] = 0;
+
 	i2c_pointer = 0;
 	i2c_is_pointer = 0;
 } // end flushTwiBuffers
@@ -159,7 +162,7 @@ void I2C_init(uint8_t ownAddress)
 
 ISR( USI_START_VECTOR )
 {
-
+	i2c_buffer[1]++;
 	// set default starting conditions for new TWI package
 	overflowState = USI_SLAVE_CHECK_ADDRESS;
 
@@ -229,9 +232,11 @@ ISR( USI_START_VECTOR )
 
 ISR( USI_OVERFLOW_VECTOR )
 {
+	i2c_buffer[2]++;
 	switch (overflowState)
 	{
 	case USI_SLAVE_CHECK_ADDRESS:
+		i2c_buffer[2]++;
 		if ( ( USIDR == 0 ) || ( ( USIDR >> 1 ) == slaveAddress) )
 		{
 			if ( USIDR & 0x01 )
@@ -246,6 +251,7 @@ ISR( USI_OVERFLOW_VECTOR )
 		}
 		else
 		{
+			i2c_buffer[3]++;
 			SET_USI_TO_TWI_START_CONDITION_MODE( );
 			i2c_is_pointer = 1;
 		}
@@ -254,8 +260,10 @@ ISR( USI_OVERFLOW_VECTOR )
 		// Master write data mode: check reply and goto USI_SLAVE_SEND_DATA if OK,
 		// else reset USI
 	case USI_SLAVE_CHECK_REPLY_FROM_SEND_DATA:
+		i2c_buffer[4]++;
 		if ( USIDR )
 		{
+			i2c_buffer[5]++;
 			// if NACK, the master does not want more data
 			SET_USI_TO_TWI_START_CONDITION_MODE( );
 			i2c_is_pointer = 1;
@@ -267,12 +275,9 @@ ISR( USI_OVERFLOW_VECTOR )
 		// copy data from buffer to USIDR and set USI to shift byte
 		// next USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA
 	case USI_SLAVE_SEND_DATA:
-		if(i2c_is_pointer){
-			i2c_pointer = USIDR;
-			i2c_is_pointer = 0;
-		}else{
-			USIDR = i2c_buffer[i2c_pointer++];
-		}
+		i2c_buffer[6]++;
+		USIDR = i2c_buffer[i2c_pointer++];
+
 		overflowState = USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA;
 		SET_USI_TO_SEND_DATA( );
 		break;
@@ -280,6 +285,7 @@ ISR( USI_OVERFLOW_VECTOR )
 		// set USI to sample reply from master
 		// next USI_SLAVE_CHECK_REPLY_FROM_SEND_DATA
 	case USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA:
+		i2c_buffer[7]++;
 		overflowState = USI_SLAVE_CHECK_REPLY_FROM_SEND_DATA;
 		SET_USI_TO_READ_ACK( );
 		break;
@@ -287,6 +293,7 @@ ISR( USI_OVERFLOW_VECTOR )
 		// Master read data mode: set USI to sample data from master, next
 		// USI_SLAVE_GET_DATA_AND_SEND_ACK
 	case USI_SLAVE_REQUEST_DATA:
+		i2c_buffer[8]++;
 		overflowState = USI_SLAVE_GET_DATA_AND_SEND_ACK;
 		SET_USI_TO_READ_DATA( );
 		break;
@@ -294,11 +301,13 @@ ISR( USI_OVERFLOW_VECTOR )
 		// copy data from USIDR and send ACK
 		// next USI_SLAVE_REQUEST_DATA
 	case USI_SLAVE_GET_DATA_AND_SEND_ACK:
-
+		i2c_buffer[9]++;
 		if(i2c_is_pointer){
+			i2c_buffer[11]++;
 			i2c_pointer = USIDR;
 			i2c_is_pointer = 0;
 		}else{
+			i2c_buffer[12]++;
 			i2c_buffer[i2c_pointer++] = USIDR;
 		}
 

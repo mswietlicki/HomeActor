@@ -90,7 +90,7 @@ static uint8_t i2c_pointer;
 
 void I2C_init(uint8_t ownAddress)
 {
-	fi2c_pointer = 0xFF;
+	i2c_pointer = 0xFF;
 	slaveAddress = ownAddress;
 
 	DDR_USI |= (1 << PORT_USI_SCL) | (1 << PORT_USI_SDA); // Set SCL and SDA as output
@@ -136,7 +136,6 @@ ISR(USI_START_VECTOR)
 		(1 << USI_START_COND_INT) | (1 << USIOIF) | //clear interrupt flags - resetting the Start Condition Flag will release SCL
 		(1 << USIPF) |(1 << USIDC) |
 		(0x0 << USICNT0); // set USI to sample 8 bits (count 16 external SCL pin toggles)
-
 } 
 
 ISR(USI_OVERFLOW_VECTOR)
@@ -200,7 +199,7 @@ ISR(USI_OVERFLOW_VECTOR)
 			break;
 	} 
 
-	if(i2c_pointer >= MAX_I2C_BUFFER)
+	if(i2c_pointer != 0xFF && i2c_pointer >= MAX_I2C_BUFFER)
 		i2c_pointer = 0;
 }
 #endif

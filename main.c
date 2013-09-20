@@ -27,7 +27,10 @@ int main(void){
 
 	while(1){
 		if(In1 && RIn1 != In1)		//On button down
-			ROut1 ^= 1;
+			if(ROut1 > 0)
+				ROut1 = 1;
+			else
+				ROut1 = 0;
 
 		RIn1 = In1;					//Move button value register
 

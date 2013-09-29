@@ -26,12 +26,11 @@ int main(void){
 	PORTB |= _BV(PB4);				//pull-up Button
 
 	while(1){
-		if(In1 && RIn1 != In1)		//On button down
+		if(RIn1 != In1)		//On button down
 			if(ROut1 > 0)
 				ROut1 = 0;
 			else
 				ROut1 = 1;
-
 		RIn1 = In1;					//Move button value register
 
 		SetBit(PORTB, PB3, ROut1);	//Set bit PB0 of PORTB to ROut1

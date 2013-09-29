@@ -19,7 +19,7 @@
 int main(void){
 
 	sei();
-	I2C_init(0x12); 
+	I2C_init(0x13); 
 
 	DDRB |= _BV(DDB3); 				//LED1
 	DDRB &= ~_BV(DDB4);				//Button

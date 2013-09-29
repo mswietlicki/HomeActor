@@ -6,6 +6,7 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include <avr/interrupt.h>
+#include <avr/eeprom.h>
 #include "i2c_slave.h"
 
 #define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
@@ -18,9 +19,14 @@
 
 int main(void){
 
+	
+
 	sei();
 	I2C_init(0x13); 
-
+	
+	eeprom_write_byte((uin8_t*)1, 0x10);
+	i2c_buffer[1] = eeprom_read_byte((uin8_t*)1);
+	
 	DDRB |= _BV(DDB3); 				//LED1
 	DDRB &= ~_BV(DDB4);				//Button
 	PORTB |= _BV(PB4);				//pull-up Button

@@ -108,9 +108,9 @@ void LoadBufforFromEEPROM(){
 		eeprom_write_block(&Register[0], &eeprom_buffor[0], MAX_Register); //Reset EEPROM
 		eeprom_write_byte(&eeprom_buffor[I2C_ADDRESS], Default_I2C_Adress); //Set default address
 		eeprom_write_byte(&is_first_run, 0); //Zero first run flag
-	}else{
-		eeprom_read_block(&Register[0], &eeprom_buffor[0], MAX_Register);	//Read register from EEPROM
 	}
+
+	eeprom_read_block(&Register[0], &eeprom_buffor[0], MAX_Register);	//Read register from EEPROM
 }
 
 void WriteRegister(uint8_t pointer, uint8_t value){

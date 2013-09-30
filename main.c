@@ -8,18 +8,22 @@
 #include <avr/interrupt.h>
 #include "i2c_slave.h"
 
-#define CHECK_BIT(var,pos) ((var) & (1<<(pos)))
-#define In1 (!CHECK_BIT(PINB,PB4))
-
+#define GetBit(var,pos) ((var) & (1<<(pos)))
 #define SetBit(var,pos,val) if(val) var &= ~_BV(pos); else var |= _BV(pos)
+
+#define In1 (!GetBit(PINB,PB4))
+
 
 void InOutLoop(register_t in_register, register_t out_register, uint8_t in_value){
 	if(ReadRegister(in_register) != in_value)		//On button down
+	{
 		if(ReadRegister(out_register) > 0)
 			WriteRegister(out_register, 0);
 		else
 			WriteRegister(out_register, 1);
-	WriteRegister(in_register, in_value);	//Move button value register
+
+		WriteRegister(in_register, in_value);	//Move button value register
+	}
 }
 
 int main(void){
@@ -32,7 +36,6 @@ int main(void){
 
 	while(1){
 		InOutLoop(R_IN1, R_OUT1, In1);
-
 
 
 		SetBit(PORTB, PB3, ReadRegister(R_OUT1));	//Set bit PB0 of PORTB to ROut1

@@ -44,7 +44,8 @@ void InOutLoop(register_t in_register, register_t out_register, uint8_t in_value
 
 int main(void){
 	sei();
-	I2C_init(); 
+	Init_Register();
+	I2C_init(ReadRegister(I2C_ADDRESS));
 
 	SetPinOutput(Out1_Bit);
 	SetPinOutput(Out2_Bit);

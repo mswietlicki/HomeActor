@@ -119,9 +119,8 @@ void WriteRegister(uint8_t pointer, uint8_t value, uint8_t persistent){
 		eeprom_write_byte(&eeprom_buffor[pointer], value);
 }
 
-void I2C_init(){
+void Init_Register(){
 	LoadBufforFromEEPROM();
-	I2C_init(ReadRegister(I2C_ADDRESS));
 }
 
 void I2C_init(uint8_t ownAddress)

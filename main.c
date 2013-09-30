@@ -22,10 +22,10 @@
 	SetBit(PORTB, pin, pullup); \
 }
 
-#define Out1_Bit 4;
-#define Out2_Bit 1;
-#define In1_Bit 3;
-#define In2_Bit 5;
+#define Out1_Bit 4
+#define Out2_Bit 1
+#define In1_Bit 3
+#define In2_Bit 5
 
 #define In1 (!GetBit(PINB,In1_Bit))
 #define In2 (!GetBit(PINB,PB5))

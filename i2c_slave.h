@@ -95,7 +95,7 @@ typedef enum
 	R_IN2				= 0x04
 } register_t;
 
-static uint8_t slaveAddress;
+#define slaveAddress ReadRegister(I2C_ADDRESS)
 static volatile overflowState_t overflowState;
 
 static uint8_t EEMEM eeprom_buffor[MAX_Register];
@@ -127,7 +127,7 @@ void Init_Register(){
 void I2C_init(uint8_t ownAddress)
 {
 	Register_pointer = 0xFF;
-	slaveAddress = ownAddress;
+	WriteRegister(I2C_ADDRESS, ownAddress, 1)
 
 	DDR_USI |= (1 << PORT_USI_SCL) | (1 << PORT_USI_SDA); // Set SCL and SDA as output
 	PORT_USI |= (1 << PORT_USI_SCL); // set SCL high

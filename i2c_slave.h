@@ -99,14 +99,15 @@ static uint8_t slaveAddress;
 static volatile overflowState_t overflowState;
 
 static uint8_t EEMEM eeprom_buffor[MAX_Register];
-static uint8_t is_first_run EEMEM;
+static uint8_t EEMEM is_first_run;
 static uint8_t Register[MAX_Register] = {0};
 static uint8_t Register_pointer;
 
 void LoadBufforFromEEPROM(){
-	if(is_first_run){
+	if(eeprom_read_byte(&is_first_run)){
 		eeprom_write_block(&Register[0], &eeprom_buffor[0], MAX_Register); //Reset EEPROM
 		eeprom_write_byte(&eeprom_buffor[I2C_ADDRESS], Default_I2C_Adress); //Set default address
+
 		eeprom_write_byte(&is_first_run, 0); //Zero first run flag
 	}
 

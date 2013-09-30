@@ -113,9 +113,10 @@ void LoadBufforFromEEPROM(){
 	eeprom_read_block(&Register[0], &eeprom_buffor[0], MAX_Register);	//Read register from EEPROM
 }
 
-void WriteRegister(uint8_t pointer, uint8_t value){
+void WriteRegister(uint8_t pointer, uint8_t value, uint8_t persistent){
 	Register[pointer] = value;
-	eeprom_write_byte(&eeprom_buffor[pointer], value);
+	if(persistent)
+		eeprom_write_byte(&eeprom_buffor[pointer], value);
 }
 
 void I2C_init(){
@@ -228,7 +229,7 @@ ISR(USI_OVERFLOW_VECTOR)
 				Register_pointer = 0;			// Set address to 0		
 		else
 		{
-			WriteRegister(Register_pointer++, data);
+			WriteRegister(Register_pointer++, data, 1);
 		}
 
 		overflowState = USI_SLAVE_REQUEST_DATA;

@@ -34,11 +34,11 @@ void InOutLoop(register_t in_register, register_t out_register, uint8_t in_value
 	if(ReadRegister(in_register) != in_value)		//On button down
 	{
 		if(ReadRegister(out_register) > 0)
-			WriteRegister(out_register, 0);
+			WriteRegister(out_register, 0, 1);
 		else
-			WriteRegister(out_register, 1);
+			WriteRegister(out_register, 1, 1);
 
-		WriteRegister(in_register, in_value);	//Move button value register
+		WriteRegister(in_register, in_value, 0);	//Move button value register
 	}
 }
 

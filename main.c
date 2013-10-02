@@ -7,6 +7,7 @@
 #include <avr/eeprom.h>
 #include "usiTwiSlave.h"
 #include "io_macros.h"
+#include "config.h"
 
 //==================
 
@@ -20,19 +21,8 @@
 
 //====================
 
-#define REGISTER_SIZE 32
-#define Default_I2C_Adress 0x10
 #define ReadRegister(address) (Register[address])
 #define slaveAddress Register[I2C_ADDRESS]
-
-typedef enum
-{
-	I2C_ADDRESS			= 0x00,
-	R_OUT1				= 0x01,
-	R_OUT2				= 0x02,
-	R_IN1				= 0x03,
-	R_IN2				= 0x04
-} register_t;
 
 static uint8_t EEMEM eeprom_buffor[REGISTER_SIZE];
 static uint8_t EEMEM is_first_run;

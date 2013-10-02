@@ -124,10 +124,9 @@ void Init_Register(){
 	LoadBufforFromEEPROM();
 }
 
-void I2C_init(uint8_t ownAddress)
+void I2C_init()
 {
 	Register_pointer = 0xFF;
-	//WriteRegister(I2C_ADDRESS, ownAddress, 1);
 
 	DDR_USI |= (1 << PORT_USI_SCL) | (1 << PORT_USI_SDA); // Set SCL and SDA as output
 	PORT_USI |= (1 << PORT_USI_SCL); // set SCL high

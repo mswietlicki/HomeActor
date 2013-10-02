@@ -2,6 +2,7 @@
 #include <avr/io.h>
 #include <avr/boot.h>
 #include <avr/pgmspace.h>
+#include <avr/interrupt.h>
 #include <avr/eeprom.h>
 #include "usiTwiSlave.h"
 #include "../config.h"

@@ -250,12 +250,11 @@ local variables
 
 ********************************************************************************/
 
-static uint8_t	(*_onI2CReadFromRegister)(uint8_t reg);
-static void    	(*_onI2CWriteToRegister)(uint8_t reg, uint8_t value);
+static uint8_t	(*_onI2CRead)(uint8_t reg);
+static void    	(*_onI2CWrite)(uint8_t reg, uint8_t value);
 
 static uint8_t                  slaveAddress;
 static volatile overflowState_t overflowState;
-static volatile uint8_t 		currentRegister = NO_CURRENT_REGISTER_SET;
 
 /********************************************************************************
 
@@ -273,14 +272,14 @@ void usiTwiSlaveSetAddress(uint8_t ownAddress)
 void
 	usiTwiSlaveInit(
 	uint8_t ownAddress,
-	uint8_t	(*onI2CReadFromRegister)(uint8_t reg),
-	void (*onI2CWriteToRegister)(uint8_t reg, uint8_t value)
+	uint8_t	(*onI2CRead)(uint8_t reg),
+	void (*onI2CWrite)(uint8_t reg, uint8_t value)
 	)
 {
 
 	usiTwiSlaveSetAddress(ownAddress);
-	_onI2CReadFromRegister = onI2CReadFromRegister;
-	_onI2CWriteToRegister = onI2CWriteToRegister;
+	_onI2CRead = onI2CRead;
+	_onI2CWrite = onI2CWrite;
 
 	// In Two Wire mode (USIWM1, USIWM0 = 1X), the slave USI will pull SCL
 	// low when a start condition is detected or a counter overflow (only
@@ -365,8 +364,6 @@ ISR( USI_START_VECTOR )
 	}
 	else
 	{
-		currentRegister = NO_CURRENT_REGISTER_SET;
-
 		// a Stop Condition did occur
 		USICR =
 			// enable Start Condition Interrupt
@@ -449,8 +446,7 @@ ISR( USI_OVERFLOW_VECTOR )
 		// next USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA
 	case USI_SLAVE_SEND_DATA:
 
-		USIDR = _onI2CReadFromRegister(currentRegister);
-		currentRegister = NO_CURRENT_REGISTER_SET;
+		USIDR = _onI2CRead();
 		overflowState = USI_SLAVE_REQUEST_REPLY_FROM_SEND_DATA;
 		SET_USI_TO_SEND_DATA( );
 		break;
@@ -473,22 +469,7 @@ ISR( USI_OVERFLOW_VECTOR )
 		// next USI_SLAVE_REQUEST_DATA
 	case USI_SLAVE_GET_DATA_AND_SEND_ACK:
 
-		// The master is writing a value. If we don't have a register yet, it 
-		// must be writing the register value.
-		if (currentRegister == NO_CURRENT_REGISTER_SET)
-		{
-			// Store the value as the current register.
-			currentRegister = USIDR;
-		}
-		else
-		{
-			// We already have a register value, so it must be storing some data.
-			_onI2CWriteToRegister(currentRegister, USIDR);
-
-			// Currently we only support writing a single value, so we assume that the
-			// transaction is over.
-			currentRegister = NO_CURRENT_REGISTER_SET;
-		}
+		_onI2CWrite(USIDR);
 
 		// next USI_SLAVE_REQUEST_DATA
 		overflowState = USI_SLAVE_REQUEST_DATA;

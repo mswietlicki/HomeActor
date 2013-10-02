@@ -38,7 +38,7 @@ static uint8_t EEMEM eeprom_buffor[REGISTER_SIZE];
 static uint8_t EEMEM is_first_run;
 static uint8_t Register[REGISTER_SIZE] = {0};
 
-void LoadBufforFromEEPROM(){
+void Init_Register(){
 	if(eeprom_read_byte(&is_first_run)){
 		eeprom_write_block(&Register[0], &eeprom_buffor[0], REGISTER_SIZE); //Reset EEPROM
 		eeprom_write_byte(&eeprom_buffor[I2C_ADDRESS], Default_I2C_Adress); //Set default address
@@ -55,10 +55,6 @@ void WriteRegister(uint8_t pointer, uint8_t value, uint8_t persistent){
 		eeprom_write_byte(&eeprom_buffor[pointer], value);
 }
 
-void Init_Register(){
-	LoadBufforFromEEPROM();
-}
-
 //=======================
 
 // A callback triggered when the i2c master attempts to read from a register.
@@ -71,6 +67,8 @@ uint8_t i2cReadFromRegister(uint8_t reg)
 void i2cWriteToRegister(uint8_t reg, uint8_t value)
 {
 	WriteRegister(reg, value, 1);
+	if(reg == 0)
+		usiTwiSlaveSetAddress(slaveAddress);
 }
 
 

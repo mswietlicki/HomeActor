@@ -4,6 +4,7 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include <avr/interrupt.h>
+#include <avr/eeprom.h>
 #include "usiTwiSlave.h"
 #include "io_macros.h"
 

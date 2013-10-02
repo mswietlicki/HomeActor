@@ -64,7 +64,7 @@ void Init_Register(){
 // A callback triggered when the i2c master attempts to read from a register.
 uint8_t i2cReadFromRegister(uint8_t reg)
 {
-	ReadRegister(reg);
+	return ReadRegister(reg);
 }
 
 // A callback triggered when the i2c master attempts to write to a register.

@@ -1,5 +1,5 @@
 #!/bin/bash
-rm main.o main.elf main.hex
+rm main.o usiTwiSlave.o main.elf main.hex
 
 avr-gcc -Os -DF_CPU=8000000UL -mmcu=attiny85 -c main.c usiTwiSlave.c
 avr-gcc -mmcu=attiny85 -o main.elf main.o usiTwiSlave.o

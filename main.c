@@ -1,26 +1,13 @@
-#ifndef F_CPU
 #define F_CPU 8000000UL
-#endif
 
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdlib.h>
 #include <avr/interrupt.h>
-#include "i2c_slave.h"
+#include "usiTwiSlave.h"
+#include "io_macros.h"
 
-#define GetBit(var,pos) ((var) & (1<<(pos)))
-#define SetBit(var,pos,val) if(val) var &= ~_BV(pos); else var |= _BV(pos)
-
-#define SetPinOutput(pin) \
-{ \
-	DDRB |= _BV(pin); \
-}
-
-#define SetPinInput(pin, pullup) \
-{ \
-	DDRB &= ~_BV(pin); \
-	SetBit(PORTB, pin, pullup); \
-}
+//==================
 
 #define Out1_Bit 4
 #define Out2_Bit 1
@@ -29,6 +16,62 @@
 
 #define In1 (!GetBit(PINB,In1_Bit))
 #define In2 (!GetBit(PINB,PB5))
+
+//====================
+
+#define REGISTER_SIZE 32
+#define Default_I2C_Adress 0x10
+#define ReadRegister(address) (Register[address])
+#define slaveAddress Register[I2C_ADDRESS]
+
+typedef enum
+{
+	I2C_ADDRESS			= 0x00,
+	R_OUT1				= 0x01,
+	R_OUT2				= 0x02,
+	R_IN1				= 0x03,
+	R_IN2				= 0x04
+} register_t;
+
+static uint8_t EEMEM eeprom_buffor[REGISTER_SIZE];
+static uint8_t EEMEM is_first_run;
+static uint8_t Register[REGISTER_SIZE] = {0};
+
+void LoadBufforFromEEPROM(){
+	if(eeprom_read_byte(&is_first_run)){
+		eeprom_write_block(&Register[0], &eeprom_buffor[0], REGISTER_SIZE); //Reset EEPROM
+		eeprom_write_byte(&eeprom_buffor[I2C_ADDRESS], Default_I2C_Adress); //Set default address
+
+		eeprom_write_byte(&is_first_run, 0); //Zero first run flag
+	}
+
+	eeprom_read_block(&Register[0], &eeprom_buffor[0], REGISTER_SIZE);	//Read register from EEPROM
+}
+
+void WriteRegister(uint8_t pointer, uint8_t value, uint8_t persistent){
+	Register[pointer] = value;
+	if(persistent)
+		eeprom_write_byte(&eeprom_buffor[pointer], value);
+}
+
+void Init_Register(){
+	LoadBufforFromEEPROM();
+}
+
+//=======================
+
+// A callback triggered when the i2c master attempts to read from a register.
+uint8_t i2cReadFromRegister(uint8_t reg)
+{
+	ReadRegister(reg);
+}
+
+// A callback triggered when the i2c master attempts to write to a register.
+void i2cWriteToRegister(uint8_t reg, uint8_t value)
+{
+	WriteRegister(reg, value, 1);
+}
+
 
 void InOutLoop(register_t in_register, register_t out_register, uint8_t in_value){
 	if(ReadRegister(in_register) != in_value)		//On button down
@@ -43,9 +86,11 @@ void InOutLoop(register_t in_register, register_t out_register, uint8_t in_value
 }
 
 int main(void){
-	sei();
 	Init_Register();
-	I2C_init();
+
+	usiTwiSlaveInit(slaveAddress, i2cReadFromRegister, i2cWriteToRegister);
+	
+	sei();
 
 	SetPinOutput(Out1_Bit);
 	SetPinOutput(Out2_Bit);

@@ -11,7 +11,7 @@ enum
 	PROGRAM_SIZE_H = 0,
 	PROGRAM_SIZE_L = 1,
 	PROGRAM_DATA = 2
-}
+};
 
 uint16_t page = 0;
 uint8_t buffer[2 * (SPM_PAGESIZE + 1)];

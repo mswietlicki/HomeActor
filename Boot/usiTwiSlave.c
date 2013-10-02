@@ -272,8 +272,8 @@ void usiTwiSlaveSetAddress(uint8_t ownAddress)
 void
 	usiTwiSlaveInit(
 	uint8_t ownAddress,
-	uint8_t	(*onI2CRead)(uint8_t reg),
-	void (*onI2CWrite)(uint8_t reg, uint8_t value)
+	uint8_t	(*onI2CRead)(),
+	void (*onI2CWrite)(uint8_t value)
 	)
 {
 

@@ -250,8 +250,8 @@ local variables
 
 ********************************************************************************/
 
-static uint8_t	(*_onI2CRead)(uint8_t reg);
-static void    	(*_onI2CWrite)(uint8_t reg, uint8_t value);
+static uint8_t	(*_onI2CRead)();
+static void    	(*_onI2CWrite)(uint8_t value);
 
 static uint8_t                  slaveAddress;
 static volatile overflowState_t overflowState;

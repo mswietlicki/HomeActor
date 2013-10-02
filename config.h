@@ -7,7 +7,7 @@
 typedef enum
 {
 	I2C_ADDRESS			= 0x00,
-	UPDATE_READY		= 0x01
+	UPDATE_READY		= 0x01,
 	R_OUT1				= 0x02,
 	R_OUT2				= 0x03,
 	R_IN1				= 0x04,

@@ -17,7 +17,7 @@
 #define In2_Bit 5
 
 #define In1 (!GetBit(PINB,In1_Bit))
-#define In2 (!GetBit(PINB,PB5))
+#define In2 (!GetBit(PINB,In2_Bit))
 
 //====================
 

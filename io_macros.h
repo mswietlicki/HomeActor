@@ -2,7 +2,7 @@
 #define IO_MACROS_H_
 
 #define GetBit(var,pos) ((var) & (1<<(pos)))
-#define SetBit(var,pos,val) if(val) var &= ~_BV(pos); else var |= _BV(pos)
+#define SetBit(var,pos,val) if(val) var |= _BV(pos); else var &= ~_BV(pos)
 
 #define SetPinOutput(pin) \
 { \

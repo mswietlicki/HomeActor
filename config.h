@@ -1,7 +1,7 @@
 #ifndef CONFIG_H_
 #define CONFIG_H_
 
-#define REGISTER_SIZE 32
+#define REGISTER_SIZE 64
 #define Default_I2C_Adress 0x10
 
 typedef enum

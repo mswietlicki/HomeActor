@@ -91,7 +91,7 @@ int main(void){
 		InOutLoop(R_IN1, R_OUT1, In1);
 		InOutLoop(R_IN2, R_OUT2, In2);
 
-		SetBit(PORTB, Out1_Bit, ReadRegister(R_OUT1));	//Set bit PB0 of PORTB to ROut1
+		SetBit(PORTB, Out1_Bit, ReadRegister(R_OUT1));
 		SetBit(PORTB, Out2_Bit, ReadRegister(R_OUT2));
 
 		_delay_ms(50);

@@ -70,7 +70,7 @@ void InOutLoop(register_t in_register, register_t out_register, uint8_t in_value
 		else
 			WriteRegister(out_register, 1, 1);
 
-		WriteRegister(in_register, in_value, 0);	//Move button value register
+		WriteRegister(in_register, in_value, 1);	//Move button value register
 	}
 }
 

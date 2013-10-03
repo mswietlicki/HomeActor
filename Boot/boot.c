@@ -27,6 +27,8 @@ inline void write_buffer_to_flash()
 {
 	uint16_t i;
 	const uint8_t* p = buffer;
+
+	cli();
 	eeprom_busy_wait();
 
 	boot_page_erase(page);

@@ -77,18 +77,17 @@ void InOutLoop(register_t in_register, register_t out_register, uint8_t in_value
 int main(void){
 	Init_Register();
 
-	SetPinOutput(Out1_Bit);
-	SetPinOutput(Out2_Bit);
-
-	SetPinInput(In1_Bit, 1);
-	SetPinInput(In2_Bit, 1);
-
 	_delay_ms(100);
 
 	usiTwiSlaveInit(slaveAddress, i2cReadFromRegister, i2cWriteToRegister);
 	
 	sei();
 
+	SetPinOutput(Out1_Bit);
+	SetPinOutput(Out2_Bit);
+
+	SetPinInput(In1_Bit, 1);
+	SetPinInput(In2_Bit, 1);
 
 	while(1){
 		InOutLoop(R_IN1, R_OUT1, In1);
